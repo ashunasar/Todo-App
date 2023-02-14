@@ -25,18 +25,22 @@ class TaskProvider extends ChangeNotifier {
   }
 
   bool isEdit = false;
+  TaskModel? oldTask;
   void initialize(TaskModel? t) {
     if (t != null) {
       pickedDate = t.date;
       titleController.text = t.title;
       descriptionController.text = t.description;
       selectedTaskEmojiMood = t.emojiData;
+      oldTask = t;
       isEdit = true;
     } else {
       selectedTaskEmojiMood = null;
       pickedDate = DateTime.now();
       titleController.clear();
       descriptionController.clear();
+      isEdit = false;
+      oldTask = null;
     }
   }
 
@@ -68,12 +72,26 @@ class TaskProvider extends ChangeNotifier {
       UtilFunctions.showToast(message: 'Please enter task description');
       return;
     }
+    final homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    if (isEdit) {
+      int index = homeProvider.tasks.indexOf(oldTask!);
+      homeProvider.updateTask(
+          TaskModel(
+              emojiData: selectedTaskEmojiMood!,
+              title: titleController.text,
+              description: descriptionController.text,
+              date: pickedDate),
+          index);
+      UtilFunctions.showToast(message: 'Your task is updated! 🎉');
+    } else {
+      homeProvider.addTask(TaskModel(
+          emojiData: selectedTaskEmojiMood!,
+          title: titleController.text,
+          description: descriptionController.text,
+          date: pickedDate));
+      UtilFunctions.showToast(message: 'Your task is created! 🎉');
+    }
 
-    Provider.of<HomeProvider>(context, listen: false).addTask(TaskModel(
-        emojiData: selectedTaskEmojiMood!,
-        title: titleController.text,
-        description: descriptionController.text,
-        date: pickedDate));
-    UtilFunctions.showToast(message: 'Your task is created! 🎉');
+    Navigator.pop(context);
   }
 }

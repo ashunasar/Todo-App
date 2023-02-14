@@ -34,6 +34,11 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateTask(TaskModel t, int index) {
+    tasks[index] = t;
+    notifyListeners();
+  }
+
   void editTask(BuildContext context, TaskModel t) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => AddTaskView(task: t)));
