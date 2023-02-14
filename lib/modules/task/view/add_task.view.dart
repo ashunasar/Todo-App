@@ -21,26 +21,7 @@ class AddTaskView extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 70.h),
-              Consumer<TaskProvider>(builder: (context, value, child) {
-                return InkWell(
-                  onTap: () {
-                    value.pickTaskEmojiMood(context);
-                  },
-                  child: Container(
-                    height: 80.h,
-                    width: 80.w,
-                    padding: EdgeInsets.all(5.h),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border:
-                            Border.all(color: AppColors.lightBlue, width: 2)),
-                    child: value.selectedTaskEmojiMood != null
-                        ? AnimatedEmoji(value.selectedTaskEmojiMood!)
-                        : Icon(Icons.add_rounded,
-                            color: AppColors.lightBlue, size: 50.h),
-                  ),
-                );
-              }),
+              getEmojiWidget(context),
               SizedBox(height: 30.h),
               const CustomTextField(hintText: 'Enter task title'),
               const CustomTextField(hintText: 'Enter task description'),
@@ -54,6 +35,27 @@ class AddTaskView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Consumer<TaskProvider> getEmojiWidget(BuildContext context) {
+    return Consumer<TaskProvider>(builder: (context, value, child) {
+      return InkWell(
+        onTap: () {
+          value.pickTaskEmojiMood(context);
+        },
+        child: Container(
+          height: 80.h,
+          width: 80.w,
+          padding: EdgeInsets.all(5.h),
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.lightBlue, width: 2)),
+          child: value.selectedTaskEmojiMood != null
+              ? AnimatedEmoji(value.selectedTaskEmojiMood!)
+              : Icon(Icons.add_rounded, color: AppColors.lightBlue, size: 50.h),
+        ),
+      );
+    });
   }
 
   Widget getDateWidget(BuildContext context) {
