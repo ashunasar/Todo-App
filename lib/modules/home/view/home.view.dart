@@ -1,14 +1,13 @@
 import 'package:animated_emoji/emoji.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/modules/home/provider/home.provider.dart';
 import 'package:todoapp/modules/task/view/add_task.view.dart';
 import 'package:todoapp/shared/colors/app_colors.dart';
 import 'package:todoapp/shared/extensions/date_time.extension.dart';
 import 'package:todoapp/shared/extensions/string_extension.dart';
-import 'package:todoapp/shared/models/task.model.dart';
-import 'package:todoapp/shared/widgets/task_dialog.widget.dart';
 
 import '../../../gen/assets.gen.dart';
 
@@ -17,7 +16,6 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final height = MediaQuery.of(context).size.height;
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
@@ -81,30 +79,57 @@ class HomeView extends StatelessWidget {
                               builder: (context, value, child) {
                             return Column(
                                 children: value.tasks
-                                    .map((e) => ListTile(
-                                          leading: CircleAvatar(
-                                              radius: 30.r,
-                                              backgroundColor:
-                                                  AppColors.lightGrey,
-                                              child: AnimatedEmoji(
-                                                e.emojiData,
-                                                size: 30.h,
-                                              )),
-                                          title: Text(e.title,
-                                              style:
-                                                  theme.textTheme.titleMedium),
-                                          subtitle: Text(
-                                              '${e.description.truncateText(35)}\n ${e.date.format()}',
-                                              style: theme.textTheme.bodySmall!
-                                                  .copyWith(
-                                                      color: AppColors.grey)),
-                                          trailing: InkWell(
-                                              onTap: () {
-                                                value.showTaskDialog(
-                                                    context, e);
-                                              },
-                                              child: const Icon(Icons
-                                                  .remove_red_eye_outlined)),
+                                    .map((e) => Slidable(
+                                          endActionPane: ActionPane(
+                                            motion: const ScrollMotion(),
+                                            children: [
+                                              SlidableAction(
+                                                onPressed: (context) {
+                                                  value.editTask(context, e);
+                                                },
+                                                backgroundColor:
+                                                    AppColors.darkBlue,
+                                                foregroundColor: Colors.white,
+                                                icon: Icons.edit,
+                                                label: 'Edit',
+                                              ),
+                                              SlidableAction(
+                                                onPressed: (context) {
+                                                  value.removeTask(e);
+                                                },
+                                                backgroundColor: Colors.red,
+                                                foregroundColor: Colors.white,
+                                                icon: Icons.delete,
+                                                label: 'Delete',
+                                              ),
+                                            ],
+                                          ),
+                                          child: ListTile(
+                                            leading: CircleAvatar(
+                                                radius: 30.r,
+                                                backgroundColor:
+                                                    AppColors.lightGrey,
+                                                child: AnimatedEmoji(
+                                                  e.emojiData,
+                                                  size: 30.h,
+                                                )),
+                                            title: Text(e.title,
+                                                style: theme
+                                                    .textTheme.titleMedium),
+                                            subtitle: Text(
+                                                '${e.description.truncateText(35)}\n ${e.date.format()}',
+                                                style: theme
+                                                    .textTheme.bodySmall!
+                                                    .copyWith(
+                                                        color: AppColors.grey)),
+                                            trailing: InkWell(
+                                                onTap: () {
+                                                  value.showTaskDialog(
+                                                      context, e);
+                                                },
+                                                child: const Icon(Icons
+                                                    .remove_red_eye_outlined)),
+                                          ),
                                         ))
                                     .toList());
                           }),

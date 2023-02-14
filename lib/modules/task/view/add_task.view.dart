@@ -4,12 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/shared/colors/app_colors.dart';
 import 'package:todoapp/shared/extensions/date_time.extension.dart';
+import 'package:todoapp/shared/models/task.model.dart';
 import 'package:todoapp/shared/widgets/custom_text_field.widget.dart';
 
 import '../provider/task.provider.dart';
 
 class AddTaskView extends StatefulWidget {
-  const AddTaskView({super.key});
+  const AddTaskView({super.key, this.task});
+  final TaskModel? task;
 
   @override
   State<AddTaskView> createState() => _AddTaskViewState();
@@ -21,13 +23,8 @@ class _AddTaskViewState extends State<AddTaskView> {
   @override
   void initState() {
     provider = Provider.of<TaskProvider>(context, listen: false);
+    provider.initialize(widget.task);
     super.initState();
-  }
-
-  @override
-  void deactivate() {
-    Provider.of<TaskProvider>(context, listen: false).reset();
-    super.deactivate();
   }
 
   @override
@@ -55,7 +52,8 @@ class _AddTaskViewState extends State<AddTaskView> {
                   onPressed: () {
                     provider.addNewTask(context);
                   },
-                  child: const Text('ADD YOUR TASK'))
+                  child:
+                      Text(provider.isEdit ? 'Update Task' : 'ADD YOUR TASK'))
             ],
           ),
         ),

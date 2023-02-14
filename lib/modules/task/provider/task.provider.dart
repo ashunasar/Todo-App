@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/modules/home/provider/home.provider.dart';
 import 'package:todoapp/shared/models/task.model.dart';
+import 'package:todoapp/shared/utils/util_functions.dart';
 
 import '../../../shared/widgets/emoji_picker.widget.dart';
 
@@ -23,6 +24,22 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
+  bool isEdit = false;
+  void initialize(TaskModel? t) {
+    if (t != null) {
+      pickedDate = t.date;
+      titleController.text = t.title;
+      descriptionController.text = t.description;
+      selectedTaskEmojiMood = t.emojiData;
+      isEdit = true;
+    } else {
+      selectedTaskEmojiMood = null;
+      pickedDate = DateTime.now();
+      titleController.clear();
+      descriptionController.clear();
+    }
+  }
+
   AnimatedEmojiData? selectedTaskEmojiMood;
   Future<void> pickTaskEmojiMood(BuildContext context) async {
     var value = await showModalBottomSheet(
@@ -37,17 +54,26 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
-  void reset() {
-    selectedTaskEmojiMood = null;
-    pickedDate = DateTime.now();
-  }
-
   void addNewTask(BuildContext context) {
+    if (selectedTaskEmojiMood == null) {
+      UtilFunctions.showToast(message: 'Please pick an emoji for your task');
+      return;
+    }
+
+    if (titleController.text.isEmpty) {
+      UtilFunctions.showToast(message: 'Please enter task title');
+      return;
+    }
+    if (descriptionController.text.isEmpty) {
+      UtilFunctions.showToast(message: 'Please enter task description');
+      return;
+    }
+
     Provider.of<HomeProvider>(context, listen: false).addTask(TaskModel(
         emojiData: selectedTaskEmojiMood!,
         title: titleController.text,
         description: descriptionController.text,
         date: pickedDate));
-    notifyListeners();
+    UtilFunctions.showToast(message: 'Your task is created! 🎉');
   }
 }
