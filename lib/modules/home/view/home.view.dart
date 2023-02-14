@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todoapp/modules/task/view/add_task.view.dart';
+import 'package:todoapp/shared/colors/app_colors.dart';
 
 import '../../../gen/assets.gen.dart';
 
@@ -57,7 +58,7 @@ class HomeView extends StatelessWidget {
                         SizedBox(width: 10.w),
                         CircleAvatar(
                           radius: 10.r,
-                          backgroundColor: const Color(0xFFD9D9D9),
+                          backgroundColor: AppColors.lightGrey,
                           child: Text(
                             '5',
                             style: theme.textTheme.bodyMedium
@@ -69,7 +70,7 @@ class HomeView extends StatelessWidget {
                       ListTile(
                         leading: CircleAvatar(
                             radius: 30.r,
-                            backgroundColor: const Color(0xFFD9D9D9),
+                            backgroundColor: AppColors.lightGrey,
                             child:
                                 Text('😄', style: TextStyle(fontSize: 24.sp))),
                         title: Text('Some random title',
@@ -77,7 +78,7 @@ class HomeView extends StatelessWidget {
                         subtitle: Text(
                             'Lorem ipsum dolor sit amet, consectetur...\n Feb 12, 2023',
                             style: theme.textTheme.bodySmall!
-                                .copyWith(color: const Color(0xFFC5C5C5))),
+                                .copyWith(color: AppColors.grey)),
                         trailing: InkWell(
                             onTap: () {},
                             child: const Icon(Icons.remove_red_eye_outlined)),

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todoapp/shared/colors/app_colors.dart';
 import '../../gen/fonts.gen.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
-      scaffoldBackgroundColor: const Color(0xff46539E),
-      colorScheme: const ColorScheme.light(
-        secondary: Color(0xff2EBAEF),
+      scaffoldBackgroundColor: AppColors.darkBlue,
+      colorScheme: ColorScheme.light(
+        secondary: AppColors.lightBlue,
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
           centerTitle: true,
-          iconTheme: IconThemeData(color: Color(0xFF5398D7)),
-          backgroundColor: Color(0xff46539E),
+          iconTheme: IconThemeData(color: AppColors.blue),
+          backgroundColor: AppColors.darkBlue,
           elevation: 0,
-          titleTextStyle: TextStyle(fontFamily: FontFamily.lexendRegular)),
+          titleTextStyle:
+              const TextStyle(fontFamily: FontFamily.lexendRegular)),
       textTheme: const TextTheme(
           displaySmall: TextStyle(
               color: Colors.white,
@@ -22,11 +24,11 @@ class AppTheme {
               color: Colors.white, fontFamily: FontFamily.lexendRegular),
           bodyMedium: TextStyle(fontFamily: FontFamily.lexendRegular),
           titleMedium: TextStyle(color: Colors.black)),
-      listTileTheme: const ListTileThemeData(
+      listTileTheme: ListTileThemeData(
           iconColor: Colors.black,
           contentPadding: EdgeInsets.zero,
-          textColor: Color(0xFFC5C5C5),
-          shape: Border(bottom: BorderSide(color: Color(0xffC5C5C5))),
+          textColor: AppColors.grey,
+          shape: Border(bottom: BorderSide(color: AppColors.grey)),
           minVerticalPadding: 15),
       textSelectionTheme:
           const TextSelectionThemeData(cursorColor: Colors.white),
@@ -45,7 +47,7 @@ class AppTheme {
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
         minimumSize: MaterialStateProperty.all(const Size(double.infinity, 40)),
-        backgroundColor: MaterialStateProperty.all(const Color(0xff2EBAEF)),
+        backgroundColor: MaterialStateProperty.all(AppColors.lightBlue),
       )),
       floatingActionButtonTheme:
           const FloatingActionButtonThemeData(foregroundColor: Colors.white));

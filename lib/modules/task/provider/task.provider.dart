@@ -1,4 +1,7 @@
+import 'package:animated_emoji/emojis.dart';
 import 'package:flutter/material.dart';
+
+import '../view/add_task.view.dart';
 
 class TaskProvider extends ChangeNotifier {
   DateTime pickedDate = DateTime.now();
@@ -11,6 +14,19 @@ class TaskProvider extends ChangeNotifier {
     if (picked != null) {
       pickedDate = picked;
       notifyListeners();
+    }
+  }
+
+  AnimatedEmojiData? selectedTaskEmojiMood;
+  Future<void> pickTaskEmojiMood(BuildContext context) async {
+    var value = await showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return const EmojiPicker();
+        },
+        context: context);
+    if (value != null) {
+      selectedTaskEmojiMood = value;
     }
   }
 }
