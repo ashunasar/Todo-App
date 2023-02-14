@@ -13,47 +13,50 @@ class AddTaskView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TaskProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: const Text('Add new task')),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Column(
-          children: [
-            SizedBox(height: 70.h),
-            InkWell(
-              onTap: () {
-                provider.pickTaskEmojiMood(context);
-              },
-              child: Consumer<TaskProvider>(builder: (context, value, child) {
-                return Container(
-                  height: 80.h,
-                  width: 80.w,
-                  padding: EdgeInsets.all(5.h),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.lightBlue, width: 2)),
-                  child: value.selectedTaskEmojiMood != null
-                      ? AnimatedEmoji(value.selectedTaskEmojiMood!)
-                      : Icon(Icons.add_rounded,
-                          color: AppColors.lightBlue, size: 50.h),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 70.h),
+              Consumer<TaskProvider>(builder: (context, value, child) {
+                return InkWell(
+                  onTap: () {
+                    value.pickTaskEmojiMood(context);
+                  },
+                  child: Container(
+                    height: 80.h,
+                    width: 80.w,
+                    padding: EdgeInsets.all(5.h),
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border:
+                            Border.all(color: AppColors.lightBlue, width: 2)),
+                    child: value.selectedTaskEmojiMood != null
+                        ? AnimatedEmoji(value.selectedTaskEmojiMood!)
+                        : Icon(Icons.add_rounded,
+                            color: AppColors.lightBlue, size: 50.h),
+                  ),
                 );
               }),
-            ),
-            SizedBox(height: 30.h),
-            const CustomTextField(hintText: 'Enter task title'),
-            const CustomTextField(hintText: 'Enter task description'),
-            SizedBox(height: 15.w),
-            getDateWidget(context, provider),
-            SizedBox(height: 15.w),
-            ElevatedButton(onPressed: () {}, child: const Text('ADD YOUR TASK'))
-          ],
+              SizedBox(height: 30.h),
+              const CustomTextField(hintText: 'Enter task title'),
+              const CustomTextField(hintText: 'Enter task description'),
+              SizedBox(height: 15.w),
+              getDateWidget(context),
+              SizedBox(height: 15.w),
+              ElevatedButton(
+                  onPressed: () {}, child: const Text('ADD YOUR TASK'))
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget getDateWidget(BuildContext context, TaskProvider provider) {
+  Widget getDateWidget(BuildContext context) {
     final theme = Theme.of(context);
     return Consumer<TaskProvider>(builder: (context, value, child) {
       return Row(
@@ -67,7 +70,7 @@ class AddTaskView extends StatelessWidget {
               SizedBox(width: 10.w),
               InkWell(
                 onTap: () {
-                  provider.selectDate(context);
+                  value.selectDate(context);
                 },
                 child: Container(
                   padding: EdgeInsets.all(2.w),
