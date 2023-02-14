@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todoapp/modules/task/view/add_task.view.dart';
 
 import '../../../gen/assets.gen.dart';
 
-class Home extends StatelessWidget {
-  const Home({super.key});
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SafeArea(
         child: Scaffold(
+            backgroundColor: Colors.white,
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AddTaskView())),
               child: Icon(Icons.add_rounded, size: 40.h),
             ),
             body: Column(

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:todoapp/core/theme/light_theme.dart';
+import 'package:todoapp/modules/task/provider/task.provider.dart';
 
 import 'modules/home/view/home.view.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (ctx) => TaskProvider()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +23,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         debugShowCheckedModeBanner: false,
         title: 'Elred Todo App',
-        home: const Home(),
+        home: const HomeView(),
       ),
     );
   }
