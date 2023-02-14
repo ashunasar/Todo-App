@@ -4,11 +4,13 @@ import 'package:provider/provider.dart';
 import 'package:todoapp/core/theme/light_theme.dart';
 import 'package:todoapp/modules/task/provider/task.provider.dart';
 
+import 'modules/home/provider/home.provider.dart';
 import 'modules/home/view/home.view.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (ctx) => TaskProvider()),
+    ChangeNotifierProvider(create: (ctx) => HomeProvider()),
   ], child: const MyApp()));
 }
 
