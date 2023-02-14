@@ -8,8 +8,27 @@ import 'package:todoapp/shared/widgets/custom_text_field.widget.dart';
 
 import '../provider/task.provider.dart';
 
-class AddTaskView extends StatelessWidget {
+class AddTaskView extends StatefulWidget {
   const AddTaskView({super.key});
+
+  @override
+  State<AddTaskView> createState() => _AddTaskViewState();
+}
+
+class _AddTaskViewState extends State<AddTaskView> {
+  late TaskProvider provider;
+
+  @override
+  void initState() {
+    provider = Provider.of<TaskProvider>(context, listen: false);
+    super.initState();
+  }
+
+  @override
+  void deactivate() {
+    Provider.of<TaskProvider>(context, listen: false).reset();
+    super.deactivate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +42,20 @@ class AddTaskView extends StatelessWidget {
               SizedBox(height: 70.h),
               getEmojiWidget(context),
               SizedBox(height: 30.h),
-              const CustomTextField(hintText: 'Enter task title'),
-              const CustomTextField(hintText: 'Enter task description'),
+              CustomTextField(
+                  controller: provider.titleController,
+                  hintText: 'Enter task title'),
+              CustomTextField(
+                  controller: provider.descriptionController,
+                  hintText: 'Enter task description'),
               SizedBox(height: 15.w),
               getDateWidget(context),
               SizedBox(height: 15.w),
               ElevatedButton(
-                  onPressed: () {}, child: const Text('ADD YOUR TASK'))
+                  onPressed: () {
+                    provider.addNewTask(context);
+                  },
+                  child: const Text('ADD YOUR TASK'))
             ],
           ),
         ),

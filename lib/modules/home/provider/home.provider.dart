@@ -27,4 +27,9 @@ class HomeProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void addTask(TaskModel t) {
+    tasks.add(t);
+    notifyListeners();
+  }
 }

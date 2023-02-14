@@ -17,18 +17,12 @@ class TaskDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                    child: Text(task.title,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.titleMedium)),
-                InkWell(
+            Align(
+                alignment: Alignment.topRight,
+                child: InkWell(
                     onTap: () => Navigator.pop(context),
-                    child: const Icon(Icons.cancel))
-              ],
-            ),
+                    child: const Icon(Icons.cancel))),
+            Text(task.title, style: theme.textTheme.titleMedium),
             SizedBox(height: 10.h),
             Text(task.description, style: theme.textTheme.titleMedium),
             SizedBox(height: 10.h),

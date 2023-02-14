@@ -1,10 +1,16 @@
 import 'package:animated_emoji/emojis.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoapp/modules/home/provider/home.provider.dart';
+import 'package:todoapp/shared/models/task.model.dart';
 
 import '../../../shared/widgets/emoji_picker.widget.dart';
 
 class TaskProvider extends ChangeNotifier {
   DateTime pickedDate = DateTime.now();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -29,5 +35,19 @@ class TaskProvider extends ChangeNotifier {
       selectedTaskEmojiMood = value;
       notifyListeners();
     }
+  }
+
+  void reset() {
+    selectedTaskEmojiMood = null;
+    pickedDate = DateTime.now();
+  }
+
+  void addNewTask(BuildContext context) {
+    Provider.of<HomeProvider>(context, listen: false).addTask(TaskModel(
+        emojiData: selectedTaskEmojiMood!,
+        title: titleController.text,
+        description: descriptionController.text,
+        date: pickedDate));
+    notifyListeners();
   }
 }
