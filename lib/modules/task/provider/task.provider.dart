@@ -1,7 +1,7 @@
 import 'package:animated_emoji/emojis.dart';
 import 'package:flutter/material.dart';
 
-import '../view/add_task.view.dart';
+import '../../../shared/widgets/emoji_picker.widget.dart';
 
 class TaskProvider extends ChangeNotifier {
   DateTime pickedDate = DateTime.now();
@@ -27,6 +27,7 @@ class TaskProvider extends ChangeNotifier {
         context: context);
     if (value != null) {
       selectedTaskEmojiMood = value;
+      notifyListeners();
     }
   }
 }
