@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/modules/task/view/add_task.view.dart';
 import 'package:todoapp/shared/models/task.model.dart';
+import 'package:todoapp/services/firestore/firestore.service.dart';
 
-import '../../../firebase/firestore_db.dart';
 import '../../../shared/widgets/task_dialog.widget.dart';
 
 class HomeProvider extends ChangeNotifier {
+  final firestoreService = FirestoreService();
+
   List<TaskModel>? tasks;
+
   void showTaskDialog(BuildContext context, TaskModel task) async {
     await showDialog(
         context: context,
+        barrierDismissible: true,
         builder: (context) {
           return TaskDialog(task: task);
         });
@@ -20,7 +24,8 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeTask(TaskModel t) {
+  void removeTask(TaskModel t) async {
+    await firestoreService.removeTask(t);
     tasks?.remove(t);
     notifyListeners();
   }
@@ -36,7 +41,7 @@ class HomeProvider extends ChangeNotifier {
   }
 
   Future<void> getTasks() async {
-    tasks = await FirestoreDb.getTasks();
+    tasks = await firestoreService.getTasks();
     notifyListeners();
   }
 }

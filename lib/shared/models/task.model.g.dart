@@ -7,6 +7,7 @@ part of 'task.model.dart';
 // **************************************************************************
 
 TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => TaskModel(
+      id: json['id'] as String?,
       emojiDataId: json['emojiDataId'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
@@ -14,6 +15,7 @@ TaskModel _$TaskModelFromJson(Map<String, dynamic> json) => TaskModel(
     );
 
 Map<String, dynamic> _$TaskModelToJson(TaskModel instance) => <String, dynamic>{
+      'id': instance.id,
       'emojiDataId': instance.emojiDataId,
       'title': instance.title,
       'description': instance.description,

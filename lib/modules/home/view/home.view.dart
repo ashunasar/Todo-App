@@ -33,10 +33,11 @@ class _HomeViewState extends State<HomeView> {
         child: Scaffold(
             backgroundColor: Colors.white,
             floatingActionButton: FloatingActionButton(
-              onPressed: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AddTaskView())),
-              child: Icon(Icons.add_rounded, size: 40.h),
-            ),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddTaskView())),
+                child: Icon(Icons.add_rounded, size: 40.h)),
             body: Column(
               children: [
                 Container(
@@ -55,10 +56,10 @@ class _HomeViewState extends State<HomeView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Assets.icons.hamburgerIcon.svg(),
-                        Text('Good Morning\nAshu',
+                        Text('Your tasks\nAshu',
                             style: theme.textTheme.displaySmall),
                         Text(
-                          'Feb 12, 2023',
+                          DateTime.now().format(),
                           style: theme.textTheme.bodySmall,
                         ),
                       ],

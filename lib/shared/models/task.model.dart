@@ -4,6 +4,7 @@ part 'task.model.g.dart';
 
 @JsonSerializable()
 class TaskModel {
+  String? id;
   String emojiDataId;
   String title;
   String description;
@@ -11,7 +12,8 @@ class TaskModel {
   DateTime date;
 
   TaskModel(
-      {required this.emojiDataId,
+      {this.id,
+      required this.emojiDataId,
       required this.title,
       required this.description,
       required this.date});

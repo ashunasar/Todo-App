@@ -5,9 +5,12 @@ import 'package:todoapp/modules/home/provider/home.provider.dart';
 import 'package:todoapp/shared/models/task.model.dart';
 import 'package:todoapp/shared/utils/util_functions.dart';
 
+import '../../../services/firestore/firestore.service.dart';
 import '../../../shared/widgets/emoji_picker.widget.dart';
 
 class TaskProvider extends ChangeNotifier {
+  final firestoreService = FirestoreService();
+
   DateTime pickedDate = DateTime.now();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -58,7 +61,7 @@ class TaskProvider extends ChangeNotifier {
     }
   }
 
-  void addNewTask(BuildContext context) {
+  void addNewTask(BuildContext context) async {
     if (selectedTaskEmojiMood == null) {
       UtilFunctions.showToast(message: 'Please pick an emoji for your task');
       return;
@@ -73,25 +76,18 @@ class TaskProvider extends ChangeNotifier {
       return;
     }
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    TaskModel task = TaskModel(
+        id: oldTask?.id,
+        emojiDataId: selectedTaskEmojiMood!.id,
+        title: titleController.text,
+        description: descriptionController.text,
+        date: pickedDate);
     if (isEdit) {
-      int index = homeProvider.tasks!.indexOf(oldTask!);
-      homeProvider.updateTask(
-          TaskModel(
-              emojiDataId: selectedTaskEmojiMood!.id,
-              title: titleController.text,
-              description: descriptionController.text,
-              date: pickedDate),
-          index);
-      UtilFunctions.showToast(message: 'Your task is updated! 🎉');
+      await firestoreService.updateTask(task);
     } else {
-      homeProvider.addTask(TaskModel(
-          emojiDataId: selectedTaskEmojiMood!.id,
-          title: titleController.text,
-          description: descriptionController.text,
-          date: pickedDate));
-      UtilFunctions.showToast(message: 'Your task is created! 🎉');
+      await firestoreService.addTask(task);
     }
-
+    await homeProvider.getTasks();
     Navigator.pop(context);
   }
 }
