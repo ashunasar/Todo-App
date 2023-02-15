@@ -9,7 +9,7 @@ import '../../../shared/widgets/task_dialog.widget.dart';
 class HomeProvider extends ChangeNotifier {
   List<TaskModel> tasks = [
     TaskModel(
-        emojiData: AnimatedEmojis.angry,
+        emojiDataId: AnimatedEmojis.angry.id,
         title: 'Some random title',
         description:
             'Lorem ipsum dolor sit amet, consectetur Lorem ipsum dolor sit amet, consectetur pLorem ipsum dolor sit amet, consectetur Lorem ipsum dolor sit amet, consectetur',

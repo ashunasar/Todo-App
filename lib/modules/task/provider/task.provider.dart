@@ -31,7 +31,7 @@ class TaskProvider extends ChangeNotifier {
       pickedDate = t.date;
       titleController.text = t.title;
       descriptionController.text = t.description;
-      selectedTaskEmojiMood = t.emojiData;
+      selectedTaskEmojiMood = AnimatedEmojiData(t.emojiDataId);
       oldTask = t;
       isEdit = true;
     } else {
@@ -77,7 +77,7 @@ class TaskProvider extends ChangeNotifier {
       int index = homeProvider.tasks.indexOf(oldTask!);
       homeProvider.updateTask(
           TaskModel(
-              emojiData: selectedTaskEmojiMood!,
+              emojiDataId: selectedTaskEmojiMood!.id,
               title: titleController.text,
               description: descriptionController.text,
               date: pickedDate),
@@ -85,7 +85,7 @@ class TaskProvider extends ChangeNotifier {
       UtilFunctions.showToast(message: 'Your task is updated! 🎉');
     } else {
       homeProvider.addTask(TaskModel(
-          emojiData: selectedTaskEmojiMood!,
+          emojiDataId: selectedTaskEmojiMood!.id,
           title: titleController.text,
           description: descriptionController.text,
           date: pickedDate));

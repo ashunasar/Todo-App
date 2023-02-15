@@ -1,4 +1,5 @@
 import 'package:animated_emoji/emoji.dart';
+import 'package:animated_emoji/emojis.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -112,7 +113,8 @@ class HomeView extends StatelessWidget {
                                                 backgroundColor:
                                                     AppColors.lightGrey,
                                                 child: AnimatedEmoji(
-                                                  e.emojiData,
+                                                  AnimatedEmojiData(
+                                                      e.emojiDataId),
                                                   size: 30.h,
                                                 )),
                                             title: Text(e.title,
