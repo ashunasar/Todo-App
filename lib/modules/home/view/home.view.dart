@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:todoapp/firebase/firestore_db.dart';
 import 'package:todoapp/modules/home/provider/home.provider.dart';
 import 'package:todoapp/modules/task/view/add_task.view.dart';
 import 'package:todoapp/shared/colors/app_colors.dart';
@@ -15,6 +16,7 @@ class HomeView extends StatelessWidget {
   const HomeView({super.key});
   @override
   Widget build(BuildContext context) {
+    FirestoreDb.getTasks();
     final theme = Theme.of(context);
     return SafeArea(
         child: Scaffold(
