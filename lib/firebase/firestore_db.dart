@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:todoapp/shared/utils/app_logger.dart';
+import 'package:todoapp/shared/models/task.model.dart';
 
 class FirestoreDb {
-  static void getTasks() async {
-    final collectionRef = FirebaseFirestore.instance.collection('tasks');
-    // AppLogger.printLog(collectionRef.snapshots());
-    collectionRef.snapshots().forEach((element) {
-      AppLogger.printLog(element.docs.first.data());
-    });
+  static Future<List<TaskModel>> getTasks() async {
+    List<TaskModel> tasks = [];
+
+    QuerySnapshot snapshots =
+        await FirebaseFirestore.instance.collection('tasks').get();
+    for (QueryDocumentSnapshot doc in snapshots.docs) {
+      tasks.add(TaskModel.fromJson(doc.data() as Map<String, dynamic>));
+    }
+    return tasks;
   }
 }

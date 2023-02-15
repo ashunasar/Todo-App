@@ -74,7 +74,7 @@ class TaskProvider extends ChangeNotifier {
     }
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     if (isEdit) {
-      int index = homeProvider.tasks.indexOf(oldTask!);
+      int index = homeProvider.tasks!.indexOf(oldTask!);
       homeProvider.updateTask(
           TaskModel(
               emojiDataId: selectedTaskEmojiMood!.id,

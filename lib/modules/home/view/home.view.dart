@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import 'package:todoapp/firebase/firestore_db.dart';
 import 'package:todoapp/modules/home/provider/home.provider.dart';
 import 'package:todoapp/modules/task/view/add_task.view.dart';
 import 'package:todoapp/shared/colors/app_colors.dart';
@@ -13,11 +12,22 @@ import 'package:todoapp/shared/extensions/string_extension.dart';
 
 import '../../../gen/assets.gen.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<HomeProvider>(context, listen: false).getTasks();
+  }
+
   @override
   Widget build(BuildContext context) {
-    FirestoreDb.getTasks();
     final theme = Theme.of(context);
     return SafeArea(
         child: Scaffold(
@@ -80,62 +90,70 @@ class HomeView extends StatelessWidget {
                         SingleChildScrollView(
                           child: Consumer<HomeProvider>(
                               builder: (context, value, child) {
-                            return Column(
-                                children: value.tasks
-                                    .map((e) => Slidable(
-                                          endActionPane: ActionPane(
-                                            motion: const ScrollMotion(),
-                                            children: [
-                                              SlidableAction(
-                                                onPressed: (context) {
-                                                  value.editTask(context, e);
-                                                },
-                                                backgroundColor:
-                                                    AppColors.darkBlue,
-                                                foregroundColor: Colors.white,
-                                                icon: Icons.edit,
-                                                label: 'Edit',
+                            return value.tasks == null
+                                ? const Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : Column(
+                                    children: value.tasks!
+                                        .map((e) => Slidable(
+                                              endActionPane: ActionPane(
+                                                motion: const ScrollMotion(),
+                                                children: [
+                                                  SlidableAction(
+                                                    onPressed: (context) {
+                                                      value.editTask(
+                                                          context, e);
+                                                    },
+                                                    backgroundColor:
+                                                        AppColors.darkBlue,
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    icon: Icons.edit,
+                                                    label: 'Edit',
+                                                  ),
+                                                  SlidableAction(
+                                                    onPressed: (context) {
+                                                      value.removeTask(e);
+                                                    },
+                                                    backgroundColor: Colors.red,
+                                                    foregroundColor:
+                                                        Colors.white,
+                                                    icon: Icons.delete,
+                                                    label: 'Delete',
+                                                  ),
+                                                ],
                                               ),
-                                              SlidableAction(
-                                                onPressed: (context) {
-                                                  value.removeTask(e);
-                                                },
-                                                backgroundColor: Colors.red,
-                                                foregroundColor: Colors.white,
-                                                icon: Icons.delete,
-                                                label: 'Delete',
+                                              child: ListTile(
+                                                leading: CircleAvatar(
+                                                    radius: 30.r,
+                                                    backgroundColor:
+                                                        AppColors.lightGrey,
+                                                    child: AnimatedEmoji(
+                                                      AnimatedEmojiData(
+                                                          e.emojiDataId),
+                                                      size: 30.h,
+                                                    )),
+                                                title: Text(e.title,
+                                                    style: theme
+                                                        .textTheme.titleMedium),
+                                                subtitle: Text(
+                                                    '${e.description.truncateText(35)}\n ${e.date.format()}',
+                                                    style: theme
+                                                        .textTheme.bodySmall!
+                                                        .copyWith(
+                                                            color: AppColors
+                                                                .grey)),
+                                                trailing: InkWell(
+                                                    onTap: () {
+                                                      value.showTaskDialog(
+                                                          context, e);
+                                                    },
+                                                    child: const Icon(Icons
+                                                        .remove_red_eye_outlined)),
                                               ),
-                                            ],
-                                          ),
-                                          child: ListTile(
-                                            leading: CircleAvatar(
-                                                radius: 30.r,
-                                                backgroundColor:
-                                                    AppColors.lightGrey,
-                                                child: AnimatedEmoji(
-                                                  AnimatedEmojiData(
-                                                      e.emojiDataId),
-                                                  size: 30.h,
-                                                )),
-                                            title: Text(e.title,
-                                                style: theme
-                                                    .textTheme.titleMedium),
-                                            subtitle: Text(
-                                                '${e.description.truncateText(35)}\n ${e.date.format()}',
-                                                style: theme
-                                                    .textTheme.bodySmall!
-                                                    .copyWith(
-                                                        color: AppColors.grey)),
-                                            trailing: InkWell(
-                                                onTap: () {
-                                                  value.showTaskDialog(
-                                                      context, e);
-                                                },
-                                                child: const Icon(Icons
-                                                    .remove_red_eye_outlined)),
-                                          ),
-                                        ))
-                                    .toList());
+                                            ))
+                                        .toList());
                           }),
                         )
                       ],
