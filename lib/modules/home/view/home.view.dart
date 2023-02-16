@@ -52,34 +52,7 @@ class _HomeViewState extends State<HomeView> {
         child: Scaffold(
             key: scaffoldKey,
             backgroundColor: Colors.white,
-            drawer: Drawer(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                DrawerHeader(
-                    decoration: BoxDecoration(color: AppColors.darkBlue),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                            radius: 50.r,
-                            backgroundImage: CachedNetworkImageProvider(
-                                currentUser!.photoURL!)),
-                        SizedBox(height: 10.h),
-                        Text(
-                            'Hey, ${UtilFunctions.getFirstName(currentUser!.displayName!)}',
-                            style: theme.textTheme.bodySmall),
-                      ],
-                    )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: ListTile(
-                    onTap: logOut,
-                    leading: const Icon(Icons.logout_rounded),
-                    title: Text('Logout', style: theme.textTheme.bodyMedium),
-                  ),
-                )
-              ],
-            )),
+            drawer: getDrawer(),
             floatingActionButton: FloatingActionButton(
                 onPressed: () => Navigator.push(
                     context,
@@ -107,8 +80,12 @@ class _HomeViewState extends State<HomeView> {
                             onTap: () {
                               scaffoldKey.currentState!.openDrawer();
                             },
-                            child: Assets.icons.hamburgerIcon.svg()),
-                        Text('Your tasks\nAshu',
+                            child: SizedBox(
+                                height: 20.h,
+                                width: 20.h,
+                                child: Assets.icons.hamburgerIcon.svg())),
+                        Text(
+                            'Your tasks\n${UtilFunctions.getFirstName(currentUser!.displayName!)}',
                             style: theme.textTheme.displaySmall),
                         Text(
                           DateTime.now().format(),
@@ -140,80 +117,103 @@ class _HomeViewState extends State<HomeView> {
                           )
                         ]),
                         SizedBox(height: 24.h),
-                        SingleChildScrollView(
-                          child: Consumer<HomeProvider>(
-                              builder: (context, value, child) {
-                            return value.tasks == null
-                                ? const Center(
-                                    child: CircularProgressIndicator(),
-                                  )
-                                : Column(
-                                    children: value.tasks!
-                                        .map((e) => Slidable(
-                                              endActionPane: ActionPane(
-                                                motion: const ScrollMotion(),
-                                                children: [
-                                                  SlidableAction(
-                                                    onPressed: (context) {
-                                                      value.editTask(
-                                                          context, e);
-                                                    },
-                                                    backgroundColor:
-                                                        AppColors.darkBlue,
-                                                    foregroundColor:
-                                                        Colors.white,
-                                                    icon: Icons.edit,
-                                                    label: 'Edit',
-                                                  ),
-                                                  SlidableAction(
-                                                    onPressed: (context) {
-                                                      value.removeTask(e);
-                                                    },
-                                                    backgroundColor: Colors.red,
-                                                    foregroundColor:
-                                                        Colors.white,
-                                                    icon: Icons.delete,
-                                                    label: 'Delete',
-                                                  ),
-                                                ],
-                                              ),
-                                              child: ListTile(
-                                                leading: CircleAvatar(
-                                                    radius: 30.r,
-                                                    backgroundColor:
-                                                        AppColors.lightGrey,
-                                                    child: AnimatedEmoji(
-                                                      AnimatedEmojiData(
-                                                          e.emojiDataId),
-                                                      size: 30.h,
-                                                    )),
-                                                title: Text(e.title,
-                                                    style: theme
-                                                        .textTheme.titleMedium),
-                                                subtitle: Text(
-                                                    '${e.description.truncateText(35)}\n ${e.date.format()}',
-                                                    style: theme
-                                                        .textTheme.bodySmall!
-                                                        .copyWith(
-                                                            color: AppColors
-                                                                .grey)),
-                                                trailing: InkWell(
-                                                    onTap: () {
-                                                      value.showTaskDialog(
-                                                          context, e);
-                                                    },
-                                                    child: const Icon(Icons
-                                                        .remove_red_eye_outlined)),
-                                              ),
-                                            ))
-                                        .toList());
-                          }),
-                        )
+                        getTasksList()
                       ],
                     ),
                   ),
                 )
               ],
             )));
+  }
+
+  SingleChildScrollView getTasksList() {
+    final theme = Theme.of(context);
+    return SingleChildScrollView(
+      child: Consumer<HomeProvider>(builder: (context, value, child) {
+        return value.tasks == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                children: value.tasks!
+                    .map((e) => Slidable(
+                          endActionPane: ActionPane(
+                            motion: const ScrollMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: (context) {
+                                  value.editTask(context, e);
+                                },
+                                backgroundColor: AppColors.darkBlue,
+                                foregroundColor: Colors.white,
+                                icon: Icons.edit,
+                                label: 'Edit',
+                              ),
+                              SlidableAction(
+                                onPressed: (context) {
+                                  value.removeTask(e);
+                                },
+                                backgroundColor: Colors.red,
+                                foregroundColor: Colors.white,
+                                icon: Icons.delete,
+                                label: 'Delete',
+                              ),
+                            ],
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                                radius: 30.r,
+                                backgroundColor: AppColors.lightGrey,
+                                child: AnimatedEmoji(
+                                  AnimatedEmojiData(e.emojiDataId),
+                                  size: 30.h,
+                                )),
+                            title: Text(e.title,
+                                style: theme.textTheme.titleMedium),
+                            subtitle: Text(
+                                '${e.description.truncateText(35)}\n ${e.date.format()}',
+                                style: theme.textTheme.bodySmall!
+                                    .copyWith(color: AppColors.grey)),
+                            trailing: InkWell(
+                                onTap: () {
+                                  value.showTaskDialog(context, e);
+                                },
+                                child:
+                                    const Icon(Icons.remove_red_eye_outlined)),
+                          ),
+                        ))
+                    .toList());
+      }),
+    );
+  }
+
+  Drawer getDrawer() {
+    final theme = Theme.of(context);
+    return Drawer(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        DrawerHeader(
+            decoration: BoxDecoration(color: AppColors.darkBlue),
+            child: Column(children: [
+              CircleAvatar(
+                  radius: 40.r,
+                  backgroundImage:
+                      CachedNetworkImageProvider(currentUser!.photoURL!)),
+              SizedBox(height: 10.h),
+              Text(
+                  'Hey, ${UtilFunctions.getFirstName(currentUser!.displayName!)}',
+                  style: theme.textTheme.bodySmall)
+            ])),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: ListTile(
+            onTap: logOut,
+            leading: const Icon(Icons.logout_rounded),
+            title: Text('Logout', style: theme.textTheme.bodyMedium),
+          ),
+        )
+      ],
+    ));
   }
 }
