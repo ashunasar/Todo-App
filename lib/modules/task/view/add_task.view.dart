@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/shared/colors/app_colors.dart';
-import 'package:todoapp/shared/extensions/date_time.extension.dart';
+import 'package:todoapp/core/extensions/date_time.extension.dart';
 import 'package:todoapp/shared/models/task.model.dart';
 import 'package:todoapp/shared/widgets/custom_text_field.widget.dart';
 

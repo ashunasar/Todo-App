@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todoapp/shared/models/task.model.dart';
-import 'package:todoapp/shared/utils/app_logger.dart';
-import 'package:todoapp/shared/utils/util_functions.dart';
+import 'package:todoapp/core/utils/app_logger.dart';
+import 'package:todoapp/core/utils/util_functions.dart';
 
 class FirestoreService {
   final collectionRef = FirebaseFirestore.instance.collection('tasks');

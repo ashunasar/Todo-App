@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todoapp/modules/home/provider/home.provider.dart';
 import 'package:todoapp/shared/models/task.model.dart';
-import 'package:todoapp/shared/utils/util_functions.dart';
+import 'package:todoapp/core/utils/util_functions.dart';
 
 import '../../../services/firestore/firestore.service.dart';
 import '../../../shared/widgets/emoji_picker.widget.dart';

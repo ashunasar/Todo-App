@@ -11,11 +11,11 @@ import 'package:todoapp/modules/home/provider/home.provider.dart';
 import 'package:todoapp/modules/task/view/add_task.view.dart';
 import 'package:todoapp/services/auth/google_signin.service.dart';
 import 'package:todoapp/shared/colors/app_colors.dart';
-import 'package:todoapp/shared/extensions/date_time.extension.dart';
-import 'package:todoapp/shared/extensions/string_extension.dart';
+import 'package:todoapp/core/extensions/date_time.extension.dart';
+import 'package:todoapp/core/extensions/string_extension.dart';
 
 import '../../../gen/assets.gen.dart';
-import '../../../shared/utils/util_functions.dart';
+import '../../../core/utils/util_functions.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
