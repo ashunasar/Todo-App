@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:todoapp/shared/models/task.model.dart';
 import 'package:todoapp/shared/utils/app_logger.dart';
 import 'package:todoapp/shared/utils/util_functions.dart';
@@ -10,7 +11,9 @@ class FirestoreService {
       List<TaskModel> tasks = [];
 
       QuerySnapshot snapshots = await collectionRef.get();
-      for (QueryDocumentSnapshot doc in snapshots.docs) {
+      for (QueryDocumentSnapshot doc in snapshots.docs.where((element) =>
+          (element.data() as Map<String, dynamic>)['uId'] ==
+          FirebaseAuth.instance.currentUser!.uid)) {
         TaskModel task = TaskModel.fromJson(doc.data() as Map<String, dynamic>);
         task.id = doc.id;
         tasks.add(task);
