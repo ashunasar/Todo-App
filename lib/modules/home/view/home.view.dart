@@ -99,7 +99,7 @@ class _HomeViewState extends State<HomeView> {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         SizedBox(height: 15.h),
                         const Text('Task in progress'),
