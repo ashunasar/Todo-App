@@ -3,7 +3,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleSigninService {
   static signIn() async {
-    GoogleSignIn().signOut();
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
 
     final GoogleSignInAuthentication? gAuth = await gUser?.authentication;
@@ -14,5 +13,9 @@ class GoogleSigninService {
     );
 
     await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  static signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 }

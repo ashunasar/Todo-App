@@ -1,11 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todoapp/modules/auth/view/auth.view.dart';
 import 'package:todoapp/modules/home/view/home.view.dart';
-import 'package:todoapp/shared/utils/preference.dart';
 
 import '../../../gen/assets.gen.dart';
-import '../../../shared/utils/constants.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -21,7 +20,7 @@ class _SplashViewState extends State<SplashView> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(seconds: 2), () {
-        String? userId = Preference.getString(Constants.userId);
+        User? userId = FirebaseAuth.instance.currentUser;
         if (userId == null) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const AuthView()));
