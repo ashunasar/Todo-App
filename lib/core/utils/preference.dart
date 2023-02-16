@@ -1,5 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+//* custom preference class to store and read values from SharedPreferences
 class Preference {
   static SharedPreferences? _prefs;
   static final Map<String, dynamic> _memoryPrefs = <String, dynamic>{};
