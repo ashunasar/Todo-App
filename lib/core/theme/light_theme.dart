@@ -49,6 +49,14 @@ class AppTheme {
         minimumSize: MaterialStateProperty.all(const Size(double.infinity, 40)),
         backgroundColor: MaterialStateProperty.all(AppColors.lightBlue),
       )),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+          style: ButtonStyle(
+              side: MaterialStateProperty.all(
+                  const BorderSide(color: Colors.white)),
+              minimumSize:
+                  MaterialStateProperty.all(const Size(double.infinity, 40)),
+              foregroundColor:
+                  MaterialStateProperty.all(const Color(0xffFFFFFF)))),
       floatingActionButtonTheme:
           const FloatingActionButtonThemeData(foregroundColor: Colors.white));
 }

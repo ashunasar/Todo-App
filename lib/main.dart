@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:todoapp/core/theme/light_theme.dart';
 import 'package:todoapp/modules/task/provider/task.provider.dart';
 
+import 'modules/auth/view/auth.view.dart';
 import 'modules/home/provider/home.provider.dart';
 import 'modules/home/view/home.view.dart';
 
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
         debugShowCheckedModeBanner: false,
         title: 'Elred Todo App',
-        home: const HomeView(),
+        home: const AuthView(),
       ),
     );
   }
