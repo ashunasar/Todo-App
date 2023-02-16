@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:todoapp/services/auth/google_signin.service.dart';
 
 import '../../../gen/assets.gen.dart';
 
@@ -19,7 +20,9 @@ class AuthView extends StatelessWidget {
           Assets.icons.elRedLogo.svg(width: 100),
           SizedBox(height: 100.h),
           OutlinedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                GoogleSigninService.signIn();
+              },
               icon: Assets.icons.googleIcon.svg(width: 20.w),
               label: const Text('LogIn with Google')),
           SizedBox(height: 20.h),
