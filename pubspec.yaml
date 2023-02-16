@@ -28,6 +28,7 @@ dependencies:
   shared_preferences: ^2.0.17
   google_sign_in: ^5.4.4
   firebase_auth: ^4.2.6
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:

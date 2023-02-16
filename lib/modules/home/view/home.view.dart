@@ -1,16 +1,21 @@
 import 'package:animated_emoji/emoji.dart';
 import 'package:animated_emoji/emojis.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
+import 'package:todoapp/modules/auth/view/auth.view.dart';
 import 'package:todoapp/modules/home/provider/home.provider.dart';
 import 'package:todoapp/modules/task/view/add_task.view.dart';
+import 'package:todoapp/services/auth/google_signin.service.dart';
 import 'package:todoapp/shared/colors/app_colors.dart';
 import 'package:todoapp/shared/extensions/date_time.extension.dart';
 import 'package:todoapp/shared/extensions/string_extension.dart';
 
 import '../../../gen/assets.gen.dart';
+import '../../../shared/utils/util_functions.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -26,12 +31,55 @@ class _HomeViewState extends State<HomeView> {
     Provider.of<HomeProvider>(context, listen: false).getTasks();
   }
 
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
+
+  final currentUser = FirebaseAuth.instance.currentUser;
+
+  void logOut() async {
+    bool isSuccess = await GoogleSigninService().signOut();
+    if (isSuccess) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const AuthView()),
+        (_) => false,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return SafeArea(
         child: Scaffold(
+            key: scaffoldKey,
             backgroundColor: Colors.white,
+            drawer: Drawer(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                DrawerHeader(
+                    decoration: BoxDecoration(color: AppColors.darkBlue),
+                    child: Column(
+                      children: [
+                        CircleAvatar(
+                            radius: 50.r,
+                            backgroundImage: CachedNetworkImageProvider(
+                                currentUser!.photoURL!)),
+                        SizedBox(height: 10.h),
+                        Text(
+                            'Hey, ${UtilFunctions.getFirstName(currentUser!.displayName!)}',
+                            style: theme.textTheme.bodySmall),
+                      ],
+                    )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: ListTile(
+                    onTap: logOut,
+                    leading: const Icon(Icons.logout_rounded),
+                    title: Text('Logout', style: theme.textTheme.bodyMedium),
+                  ),
+                )
+              ],
+            )),
             floatingActionButton: FloatingActionButton(
                 onPressed: () => Navigator.push(
                     context,
@@ -55,7 +103,11 @@ class _HomeViewState extends State<HomeView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Assets.icons.hamburgerIcon.svg(),
+                        InkWell(
+                            onTap: () {
+                              scaffoldKey.currentState!.openDrawer();
+                            },
+                            child: Assets.icons.hamburgerIcon.svg()),
                         Text('Your tasks\nAshu',
                             style: theme.textTheme.displaySmall),
                         Text(

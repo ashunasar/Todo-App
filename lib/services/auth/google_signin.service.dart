@@ -1,21 +1,37 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:todoapp/shared/utils/app_logger.dart';
 
 class GoogleSigninService {
-  static signIn() async {
-    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+  final googleSignIn = GoogleSignIn();
 
-    final GoogleSignInAuthentication? gAuth = await gUser?.authentication;
+  Future<bool> signIn() async {
+    try {
+      final GoogleSignInAccount? gUser = await googleSignIn.signIn();
 
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: gAuth?.accessToken,
-      idToken: gAuth?.idToken,
-    );
+      final GoogleSignInAuthentication? gAuth = await gUser?.authentication;
 
-    await FirebaseAuth.instance.signInWithCredential(credential);
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: gAuth?.accessToken,
+        idToken: gAuth?.idToken,
+      );
+
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      return true;
+    } catch (e) {
+      AppLogger.printLog(e);
+      return false;
+    }
   }
 
-  static signOut() async {
-    await FirebaseAuth.instance.signOut();
+  Future<bool> signOut() async {
+    try {
+      googleSignIn.signOut();
+      await FirebaseAuth.instance.signOut();
+      return true;
+    } catch (e) {
+      AppLogger.printLog(e);
+      return false;
+    }
   }
 }

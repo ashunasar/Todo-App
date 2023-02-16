@@ -9,4 +9,8 @@ class UtilFunctions {
         timeInSecForIosWeb: 1,
         fontSize: 16.0);
   }
+
+  static String getFirstName(String fullName) {
+    return fullName.split(' ')[0];
+  }
 }
